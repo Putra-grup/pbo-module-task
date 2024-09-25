@@ -1,25 +1,160 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.35222.181
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tugas Praktikum 1", "Tugas Praktikum 1\Tugas Praktikum 1.csproj", "{7F9F9741-07DC-40FF-95E2-A2AEFBEE1870}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7F9F9741-07DC-40FF-95E2-A2AEFBEE1870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F9F9741-07DC-40FF-95E2-A2AEFBEE1870}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F9F9741-07DC-40FF-95E2-A2AEFBEE1870}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F9F9741-07DC-40FF-95E2-A2AEFBEE1870}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D1376534-E86D-4D71-83EB-2AE0DB2ED2C7}
-	EndGlobalSection
-EndGlobal
+using System;
+
+public class Hewan
+{
+    public string nama;
+    public int umur;
+
+    public Hewan(string nama, int umur)
+    {
+        this.nama = nama;
+        this.umur = umur;
+    }
+
+    public virtual string Suara()
+    {
+        return "Hewan ini bersuara";
+    }
+
+    public virtual string InfoHewan()
+    {
+        return $"Nama: {nama}, Umur: {umur} tahun";
+    }
+}
+
+public class Mamalia : Hewan
+{
+    public int jumlahKaki;
+
+    public Mamalia(string nama, int umur, int jumlahKaki) : base(nama, umur)
+    {
+        this.jumlahKaki = jumlahKaki;
+    }
+
+    public override string InfoHewan()
+    {
+        return base.InfoHewan() + ($", Jumlah Kaki: {jumlahKaki}");
+    }
+}
+
+public class Reptil : Hewan
+{
+    public double panjangTubuh;
+
+    public Reptil(string nama, int umur, double panjangTubuh) : base(nama, umur)
+    {
+        this.panjangTubuh = panjangTubuh;
+    }
+
+    public override string InfoHewan()
+    {
+        return base.InfoHewan() + ($", Panjang Tubuh: {panjangTubuh} meter");
+    }
+}
+
+public class Singa : Mamalia
+{
+    public Singa(string nama, int umur, int jumlahKaki) : base(nama, umur, jumlahKaki) { }
+
+    public override string Suara()
+    {
+        return "Singa mengaum";
+    }
+
+    public void Mengaum()
+    {
+        Console.WriteLine("Singa sedang mengaum!");
+    }
+}
+
+public class Gajah : Mamalia
+{
+    public Gajah(string nama, int umur, int jumlahKaki) : base(nama, umur, jumlahKaki) { }
+
+    public override string Suara()
+    {
+        return "Gajah mengeluarkan suara terompet";
+    }
+}
+
+public class Ular : Reptil
+{
+    public Ular(string nama, int umur, double panjangTubuh) : base(nama, umur, panjangTubuh) { }
+
+    public override string Suara()
+    {
+        return "Ular mendesis";
+    }
+
+    public void Merayap()
+    {
+        Console.WriteLine("Ular sedang merayap.");
+    }
+}
+
+public class Buaya : Reptil
+{
+    public Buaya(string nama, int umur, double panjangTubuh) : base(nama, umur, panjangTubuh) { }
+
+    public override string Suara()
+    {
+        return "Buaya menggeram";
+    }
+}
+
+public class KebunBinatang
+{
+    private List<Hewan> koleksiHewan = new List<Hewan>();
+
+    public void TambahHewan(Hewan hewan)
+    {
+        koleksiHewan.Add(hewan);
+    }
+
+    public void DaftarHewan()
+    {
+        foreach (var hewan in koleksiHewan)
+        {
+            Console.WriteLine(hewan.InfoHewan());
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        KebunBinatang kebunBinatang = new KebunBinatang();
+
+        Singa singa = new Singa("King", 10, 4);
+        Gajah gajah = new Gajah("Elephant", 10, 4);
+        Ular ular = new Ular("Cobra", 5, 3);
+        Buaya buaya = new Buaya("Croco", 40, 9);
+
+        kebunBinatang.TambahHewan(singa);
+        kebunBinatang.TambahHewan(gajah);
+        kebunBinatang.TambahHewan(ular);
+        kebunBinatang.TambahHewan(buaya);
+
+        Console.WriteLine("====================================================");
+        Console.WriteLine("\nDaftar Hewan di Kebun Binatang:");
+        kebunBinatang.DaftarHewan();
+        Console.WriteLine();
+
+        Console.WriteLine("====================================================");
+        Console.WriteLine("\nDemonstrasi Polymorphism:");
+        Console.WriteLine(singa.Suara());
+        Console.WriteLine(gajah.Suara());
+        Console.WriteLine(ular.Suara());
+        Console.WriteLine(buaya.Suara());
+        Console.WriteLine();
+
+        Console.WriteLine("====================================================");
+        Console.WriteLine("\nMethod Khusus:");
+        singa.Mengaum();
+        ular.Merayap();
+        Console.WriteLine();
+        Console.WriteLine("====================================================");
+
+    }
+}
